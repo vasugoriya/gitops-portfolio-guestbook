@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: guestbook-beta
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: 'https://github.com/vasugoriya/gitops-portfolio-guestbook.git' # Your repo URL
+    targetRevision: HEAD
+    path: k8s-manifests/overlays/beta # <-- Points to the beta overlay
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: guestbook-beta
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true
